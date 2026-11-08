@@ -1,262 +1,359 @@
 
+:root {
+  color-scheme: dark;
+  --panel: rgba(12,22,37,.88);
+  --line: rgba(255,255,255,.2);
+  --gold: #ffd34d;
+  --red: #c8102e;
+}
+
 * {
   box-sizing: border-box;
   -webkit-tap-highlight-color: transparent;
 }
+
 html, body {
   margin: 0;
   width: 100%;
   height: 100%;
   overflow: hidden;
   background: #101827;
-  color: white;
+  color: #fff;
   font-family: Arial, Helvetica, sans-serif;
   touch-action: none;
 }
+
 canvas#game {
   position: fixed;
   inset: 0;
   width: 100%;
   height: 100%;
   display: block;
+  z-index: 0;
 }
+
 #loading {
   position: fixed;
   inset: 0;
-  z-index: 20;
+  z-index: 30;
   display: grid;
   place-items: center;
   background: #101827;
   font-weight: 900;
   letter-spacing: 2px;
 }
+
 #hud {
   position: fixed;
-  top: 12px;
-  left: 12px;
-  right: 12px;
   z-index: 5;
+  top: max(10px, env(safe-area-inset-top));
+  left: 10px;
+  right: 10px;
   pointer-events: none;
-  text-shadow: 0 2px 4px #000;
+  text-shadow: 0 2px 5px #000;
 }
-.hud-top, .hud-stats {
+
+.hud-head {
   display: flex;
-  justify-content: space-between;
   align-items: center;
+  justify-content: space-between;
   gap: 8px;
 }
+
 .brand {
   font-weight: 1000;
-  font-size: 23px;
-  color: #ffca28;
+  font-size: 22px;
+  color: var(--gold);
 }
+
 .brand span {
-  font-size: 11px;
-  color: white;
+  font-size: 10px;
+  color: #fff;
   letter-spacing: 1px;
 }
-#mode {
-  background: #111c;
-  padding: 8px 12px;
+
+#modeBadge {
+  background: var(--panel);
+  border: 1px solid var(--line);
   border-radius: 9px;
-  font-size: 11px;
-  font-weight: bold;
-}
-.hud-stats {
-  margin-top: 10px;
-  justify-content: flex-start;
-}
-.hud-stats div {
-  min-width: 65px;
   padding: 7px 10px;
-  background: #101827d9;
-  border: 1px solid #ffffff26;
-  border-radius: 9px;
+  font-size: 10px;
+  font-weight: 900;
+}
+
+.stats {
+  display: flex;
+  gap: 6px;
+  margin-top: 8px;
+}
+
+.stats div {
+  min-width: 57px;
+  padding: 6px 8px;
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 8px;
   display: flex;
   flex-direction: column;
   gap: 2px;
 }
-.hud-stats small {
-  font-size: 9px;
-  color: #b9c7d9;
+
+.stats small {
+  font-size: 8px;
+  color: #c3d0df;
 }
-.hud-stats strong {
-  font-size: 20px;
+
+.stats b {
+  font-size: 18px;
 }
+
 #destination, #message {
   display: table;
-  background: #101827d9;
-  padding: 7px 10px;
+  max-width: min(90vw, 480px);
+  margin-top: 6px;
+  padding: 7px 9px;
+  background: var(--panel);
   border-radius: 7px;
-  margin-top: 7px;
-  font-size: 11px;
+  font-size: 10px;
 }
+
 #message {
-  color: #ffdf75;
+  color: #ffe18b;
 }
+
 #minimap {
   position: fixed;
-  right: 12px;
-  bottom: 115px;
-  width: 154px;
-  height: 154px;
+  right: 10px;
+  bottom: calc(118px + env(safe-area-inset-bottom));
+  width: 132px;
+  height: 132px;
   padding: 2px;
-  background: #101827dd;
-  border: 2px solid #ffffff88;
-  border-radius: 12px;
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 10px;
   z-index: 5;
+  pointer-events: none;
 }
+
 #map {
   width: 100%;
   height: 100%;
   border-radius: 8px;
 }
+
 #controls {
   position: fixed;
-  bottom: 15px;
-  left: 12px;
-  right: 12px;
+  left: 10px;
+  right: 10px;
+  bottom: calc(12px + env(safe-area-inset-bottom));
+  z-index: 8;
   display: flex;
   justify-content: space-between;
   align-items: end;
-  z-index: 8;
   pointer-events: none;
 }
-#controls button, #action-buttons button {
-  pointer-events: auto;
-  border: 1px solid #ffffff55;
-  background: #101827dc;
-  color: white;
-  border-radius: 13px;
-  font-weight: 900;
-  min-width: 54px;
-  min-height: 52px;
-  padding: 10px;
-  touch-action: none;
-}
+
 .steering, .driving {
   display: flex;
   gap: 7px;
+  pointer-events: auto;
 }
-.steering button {
-  width: 58px;
-  height: 58px;
-  font-size: 24px;
-}
+
 .driving {
-  flex-wrap: wrap;
-  justify-content: end;
   max-width: 190px;
+  justify-content: flex-end;
+  flex-wrap: wrap;
 }
-.driving button {
-  min-height: 43px !important;
-  font-size: 10px;
+
+button, select {
+  font: inherit;
 }
-.driving .gas {
-  background: #147c48;
+
+#controls button, #actionButtons button {
+  pointer-events: auto;
+  border: 1px solid #ffffff55;
+  background: rgba(12,22,37,.9);
+  color: white;
+  border-radius: 12px;
+  font-weight: 900;
+  min-width: 50px;
+  min-height: 46px;
+  padding: 9px;
+  touch-action: none;
 }
-#action-buttons {
+
+#controls .steering button {
+  width: 57px;
+  height: 57px;
+  font-size: 22px;
+}
+
+#controls .driving button {
+  min-height: 40px;
+  font-size: 9px;
+}
+
+#controls .gas {
+  background: #176b43;
+}
+
+#actionButtons {
   position: fixed;
-  right: 12px;
-  top: 105px;
+  right: 10px;
+  top: 112px;
   z-index: 8;
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: 5px;
 }
-#action-buttons button {
-  min-height: 38px;
-  font-size: 10px;
-  padding: 7px 10px;
+
+#actionButtons button {
+  min-height: 34px;
+  font-size: 9px;
+  padding: 7px 9px;
 }
+
 #crosshair {
   position: fixed;
   left: 50%;
   top: 50%;
   transform: translate(-50%,-50%);
-  color: white;
   font-size: 24px;
-  text-shadow: 0 1px 5px black;
+  text-shadow: 0 2px 5px #000;
+  display: none;
+  z-index: 6;
+  pointer-events: none;
+}
+
+#walkHint {
+  position: fixed;
+  left: 50%;
+  bottom: 10px;
+  transform: translateX(-50%);
+  z-index: 6;
+  background: var(--panel);
+  padding: 7px 10px;
+  border-radius: 7px;
+  font-size: 9px;
+  white-space: nowrap;
   display: none;
   pointer-events: none;
 }
-#walk-hint {
-  position: fixed;
-  bottom: 12px;
-  left: 50%;
-  transform: translateX(-50%);
-  z-index: 6;
-  background: #101827dc;
-  border-radius: 8px;
-  padding: 8px 12px;
-  font-size: 10px;
-  display: none;
-  white-space: nowrap;
-}
-#start-screen {
+
+#startScreen {
   position: fixed;
   inset: 0;
-  z-index: 15;
+  z-index: 20;
   display: grid;
   place-items: center;
-  background: linear-gradient(#081323b8,#081323ed);
+  padding: 18px;
+  background: linear-gradient(#071321c9,#071321ed);
 }
-.start-card {
-  width: min(90%, 420px);
+
+.startCard {
+  width: min(92vw, 430px);
+  max-height: 94dvh;
+  overflow: auto;
   text-align: center;
-  padding: 30px 22px;
-  border: 1px solid #ffffff35;
-  border-radius: 22px;
-  background: #172438f2;
-  box-shadow: 0 20px 70px #0008;
+  padding: 23px 20px;
+  border: 1px solid var(--line);
+  border-radius: 20px;
+  background: #172438f5;
+  box-shadow: 0 18px 60px #0009;
 }
+
 .logo {
-  color: #ffca28;
-  font-size: 54px;
+  font-size: 48px;
   font-weight: 1000;
+  color: var(--gold);
 }
-.start-card h1 {
-  margin: 3px 0 12px;
-  font-size: 25px;
+
+.startCard h1 {
+  font-size: 23px;
+  margin: 0 0 8px;
 }
-.start-card p {
-  color: #c6d3e3;
+
+.intro {
+  font-size: 13px;
   line-height: 1.5;
+  color: #cad5e3;
+  margin: 8px 0 18px;
 }
-#startBtn {
-  border: 0;
-  border-radius: 12px;
-  background: #ffca28;
-  color: #172033;
-  padding: 15px 25px;
-  font-weight: 1000;
-  font-size: 15px;
-  margin: 14px 0;
-}
-.start-card .small {
+
+.startCard label {
+  display: block;
+  text-align: left;
   font-size: 10px;
+  font-weight: 900;
+  color: #d9e3ef;
+  margin: 12px 0 5px;
 }
+
+.startCard select {
+  width: 100%;
+  padding: 12px;
+  border-radius: 9px;
+  border: 1px solid #ffffff44;
+  background: #0e1929;
+  color: white;
+  font-size: 13px;
+}
+
+.startCard #startBtn {
+  width: 100%;
+  padding: 14px;
+  margin-top: 18px;
+  border: 0;
+  border-radius: 10px;
+  background: var(--gold);
+  color: #172033;
+  font-size: 14px;
+  font-weight: 1000;
+}
+
+.controlsNote {
+  font-size: 10px;
+  line-height: 1.5;
+  color: #aebdd0;
+}
+
+#loadError {
+  color: #ff9b9b;
+  font-size: 11px;
+  line-height: 1.4;
+}
+
 button:active {
-  transform: scale(.95);
-  filter: brightness(1.25);
+  transform: scale(.96);
+  filter: brightness(1.2);
 }
-@media (max-width: 600px) {
+
+@media(max-width:600px) {
+  .stats div {
+    min-width: 49px;
+    padding: 5px;
+  }
+
+  .stats b {
+    font-size: 16px;
+  }
+
   #minimap {
-    width: 116px;
-    height: 116px;
-    bottom: 115px;
+    width: 108px;
+    height: 108px;
+    bottom: calc(118px + env(safe-area-inset-bottom));
   }
-  .hud-stats div {
-    min-width: 55px;
-    padding: 6px;
+
+  #actionButtons {
+    top: 130px;
   }
-  .hud-stats strong {
-    font-size: 17px;
+
+  #actionButtons button {
+    font-size: 8px;
+    min-height: 31px;
   }
-  #action-buttons {
-    top: 125px;
-  }
-  #action-buttons button {
-    font-size: 9px;
+
+  .brand {
+    font-size: 19px;
   }
 }
