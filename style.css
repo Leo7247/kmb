@@ -1,0 +1,262 @@
+
+* {
+  box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
+}
+html, body {
+  margin: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background: #101827;
+  color: white;
+  font-family: Arial, Helvetica, sans-serif;
+  touch-action: none;
+}
+canvas#game {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+#loading {
+  position: fixed;
+  inset: 0;
+  z-index: 20;
+  display: grid;
+  place-items: center;
+  background: #101827;
+  font-weight: 900;
+  letter-spacing: 2px;
+}
+#hud {
+  position: fixed;
+  top: 12px;
+  left: 12px;
+  right: 12px;
+  z-index: 5;
+  pointer-events: none;
+  text-shadow: 0 2px 4px #000;
+}
+.hud-top, .hud-stats {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+}
+.brand {
+  font-weight: 1000;
+  font-size: 23px;
+  color: #ffca28;
+}
+.brand span {
+  font-size: 11px;
+  color: white;
+  letter-spacing: 1px;
+}
+#mode {
+  background: #111c;
+  padding: 8px 12px;
+  border-radius: 9px;
+  font-size: 11px;
+  font-weight: bold;
+}
+.hud-stats {
+  margin-top: 10px;
+  justify-content: flex-start;
+}
+.hud-stats div {
+  min-width: 65px;
+  padding: 7px 10px;
+  background: #101827d9;
+  border: 1px solid #ffffff26;
+  border-radius: 9px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.hud-stats small {
+  font-size: 9px;
+  color: #b9c7d9;
+}
+.hud-stats strong {
+  font-size: 20px;
+}
+#destination, #message {
+  display: table;
+  background: #101827d9;
+  padding: 7px 10px;
+  border-radius: 7px;
+  margin-top: 7px;
+  font-size: 11px;
+}
+#message {
+  color: #ffdf75;
+}
+#minimap {
+  position: fixed;
+  right: 12px;
+  bottom: 115px;
+  width: 154px;
+  height: 154px;
+  padding: 2px;
+  background: #101827dd;
+  border: 2px solid #ffffff88;
+  border-radius: 12px;
+  z-index: 5;
+}
+#map {
+  width: 100%;
+  height: 100%;
+  border-radius: 8px;
+}
+#controls {
+  position: fixed;
+  bottom: 15px;
+  left: 12px;
+  right: 12px;
+  display: flex;
+  justify-content: space-between;
+  align-items: end;
+  z-index: 8;
+  pointer-events: none;
+}
+#controls button, #action-buttons button {
+  pointer-events: auto;
+  border: 1px solid #ffffff55;
+  background: #101827dc;
+  color: white;
+  border-radius: 13px;
+  font-weight: 900;
+  min-width: 54px;
+  min-height: 52px;
+  padding: 10px;
+  touch-action: none;
+}
+.steering, .driving {
+  display: flex;
+  gap: 7px;
+}
+.steering button {
+  width: 58px;
+  height: 58px;
+  font-size: 24px;
+}
+.driving {
+  flex-wrap: wrap;
+  justify-content: end;
+  max-width: 190px;
+}
+.driving button {
+  min-height: 43px !important;
+  font-size: 10px;
+}
+.driving .gas {
+  background: #147c48;
+}
+#action-buttons {
+  position: fixed;
+  right: 12px;
+  top: 105px;
+  z-index: 8;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+#action-buttons button {
+  min-height: 38px;
+  font-size: 10px;
+  padding: 7px 10px;
+}
+#crosshair {
+  position: fixed;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%,-50%);
+  color: white;
+  font-size: 24px;
+  text-shadow: 0 1px 5px black;
+  display: none;
+  pointer-events: none;
+}
+#walk-hint {
+  position: fixed;
+  bottom: 12px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 6;
+  background: #101827dc;
+  border-radius: 8px;
+  padding: 8px 12px;
+  font-size: 10px;
+  display: none;
+  white-space: nowrap;
+}
+#start-screen {
+  position: fixed;
+  inset: 0;
+  z-index: 15;
+  display: grid;
+  place-items: center;
+  background: linear-gradient(#081323b8,#081323ed);
+}
+.start-card {
+  width: min(90%, 420px);
+  text-align: center;
+  padding: 30px 22px;
+  border: 1px solid #ffffff35;
+  border-radius: 22px;
+  background: #172438f2;
+  box-shadow: 0 20px 70px #0008;
+}
+.logo {
+  color: #ffca28;
+  font-size: 54px;
+  font-weight: 1000;
+}
+.start-card h1 {
+  margin: 3px 0 12px;
+  font-size: 25px;
+}
+.start-card p {
+  color: #c6d3e3;
+  line-height: 1.5;
+}
+#startBtn {
+  border: 0;
+  border-radius: 12px;
+  background: #ffca28;
+  color: #172033;
+  padding: 15px 25px;
+  font-weight: 1000;
+  font-size: 15px;
+  margin: 14px 0;
+}
+.start-card .small {
+  font-size: 10px;
+}
+button:active {
+  transform: scale(.95);
+  filter: brightness(1.25);
+}
+@media (max-width: 600px) {
+  #minimap {
+    width: 116px;
+    height: 116px;
+    bottom: 115px;
+  }
+  .hud-stats div {
+    min-width: 55px;
+    padding: 6px;
+  }
+  .hud-stats strong {
+    font-size: 17px;
+  }
+  #action-buttons {
+    top: 125px;
+  }
+  #action-buttons button {
+    font-size: 9px;
+  }
+}
